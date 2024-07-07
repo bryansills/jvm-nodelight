@@ -1,0 +1,8 @@
+selectAll:
+SELECT *
+FROM user;
+
+insert:
+INSERT INTO user(name, age, created_at)
+VALUES (?, ?, ?)
+RETURNING id;
