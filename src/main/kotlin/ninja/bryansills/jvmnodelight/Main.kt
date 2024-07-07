@@ -19,29 +19,25 @@ fun main() {
             url = "jdbc:sqlite:jvm-nodelight.db",
             schema = Database.Schema.synchronous(),
             migrateEmptySchema = true,
+            properties = Properties().apply { put("foreign_keys", "true") },
         )
         val database = Database(driver)
 
-        val initialResults = database.userQueries.selectAll().awaitAsList()
-        println(initialResults)
+        val allUsers = database.userQueries.selectAll().awaitAsList()
+        println(allUsers)
 
-        val jeffId = database
-            .userQueries
-            .insert("Jeff", 42, Clock.System.now().toString())
-            .awaitAsOne()
-        val cateId = database
-            .userQueries
-            .insert("Cate", 22, Clock.System.now().toString())
-            .awaitAsOne()
-        val danielId = database
-            .userQueries
-            .insert("Daniel", 15, Clock.System.now().toString())
+        val randUserId = allUsers.random().id
+
+        val initialLocations = database.locationQueries.selectAll().awaitAsList()
+        println(initialLocations)
+
+        database
+            .locationQueries
+            .insert("New location", Clock.System.now().toString(), randUserId)
             .awaitAsOne()
 
-        println(listOf(jeffId, cateId, danielId))
-
-        val subsequentResults = database.userQueries.selectAll().awaitAsList()
-        println(subsequentResults)
+        val nowLocations = database.locationQueries.selectAll().awaitAsList()
+        println(nowLocations)
     }
 
 }

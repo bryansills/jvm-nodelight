@@ -1,0 +1,8 @@
+selectAll:
+SELECT *
+FROM location;
+
+insert:
+INSERT INTO location(name, created_at, manager_id)
+VALUES (?, ?, ?)
+RETURNING id;

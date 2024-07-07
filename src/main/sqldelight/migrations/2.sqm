@@ -1,0 +1,7 @@
+CREATE TABLE location (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    manager_id INTEGER NOT NULL,
+    FOREIGN KEY(manager_id) REFERENCES user(id)
+);
