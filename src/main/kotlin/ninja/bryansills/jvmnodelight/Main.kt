@@ -1,6 +1,7 @@
 package ninja.bryansills.jvmnodelight
 
 import app.cash.sqldelight.async.coroutines.awaitAsList
+import app.cash.sqldelight.async.coroutines.awaitAsOne
 import app.cash.sqldelight.async.coroutines.synchronous
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
@@ -24,9 +25,20 @@ fun main() {
         val initialResults = database.userQueries.selectAll().awaitAsList()
         println(initialResults)
 
-        database.userQueries.insert("Bob", 42, Clock.System.now().toString())
-        database.userQueries.insert("Cate", 22, Clock.System.now().toString())
-        database.userQueries.insert("Daniel", 15, Clock.System.now().toString())
+        val jeffId = database
+            .userQueries
+            .insert("Jeff", 42, Clock.System.now().toString())
+            .awaitAsOne()
+        val cateId = database
+            .userQueries
+            .insert("Cate", 22, Clock.System.now().toString())
+            .awaitAsOne()
+        val danielId = database
+            .userQueries
+            .insert("Daniel", 15, Clock.System.now().toString())
+            .awaitAsOne()
+
+        println(listOf(jeffId, cateId, danielId))
 
         val subsequentResults = database.userQueries.selectAll().awaitAsList()
         println(subsequentResults)
